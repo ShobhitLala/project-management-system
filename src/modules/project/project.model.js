@@ -1,0 +1,31 @@
+import mongoose from "mongoose";
+const projectSchema= new mongoose.Schema({
+    name: {
+    type: String,
+    required: true,
+    trim: true
+},
+workspace: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "WorkSpace",
+    required: true
+},
+createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true
+},
+description: {
+    type: String,
+    trim: true
+},
+status: {
+    type: String,
+    enum: ["ACTIVE", "COMPLETED", "ON_HOLD"],
+    default: "ACTIVE"
+},
+
+},{
+    timestamps:true
+});
+export const Project=mongoose.model("Project",projectSchema)
