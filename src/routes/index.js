@@ -3,10 +3,12 @@ import authRoutes from "../modules/auth/auth.route.js"
 import { authenticate } from "../middleware/auth.middleware.js";
 import workspaceRouter from "../modules/workspace/workspace.route.js";
 import projectRouter from "../modules/project/project.route.js";
+import taskRouter from "../modules/task/task.route.js";
 const router=Router();
 router.use("/auth", authRoutes);
 router.use("/workspaces", workspaceRouter);
 router.use("/projects",projectRouter);
+router.use("/tasks",taskRouter);
 router.get("/me", authenticate, (req, res) => {
     res.json({
         user: req.user
