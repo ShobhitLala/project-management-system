@@ -37,3 +37,11 @@ const task = await Task.create({
 return task
 
 };
+export const getProjectTasks=async(projectId)=>{
+const existingProject = await Project.findById(projectId);
+if (!existingProject) {
+    throw new Error("Project not found");
+}
+const tasks=await Task.find({project:projectId});
+return tasks;
+}
