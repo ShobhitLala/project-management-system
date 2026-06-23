@@ -1,4 +1,4 @@
-import { createTask, getProjectTasks } from "./task.service.js";
+import { createTask, getProjectTasks, updateTaskStatus } from "./task.service.js";
 export const createTaskController = async (req, res) => {
      try {
         const taskData=req.body
@@ -31,4 +31,21 @@ export const getProjectTasksController = async (
      })
    }
 
+};
+export const updateTaskStatusController = async (
+    req,
+    res
+) => {
+    try {
+      const taskId=req.params.taskId;
+      const { status } = req.body;
+      const result=await updateTaskStatus(taskId,status)
+       res.status(201).json({
+            result
+        })
+    } catch (error) {
+        res.status(400).json({
+        message:error.message
+     })
+    }
 };

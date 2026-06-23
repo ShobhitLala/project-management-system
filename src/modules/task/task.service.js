@@ -45,3 +45,23 @@ if (!existingProject) {
 const tasks=await Task.find({project:projectId});
 return tasks;
 }
+export const updateTaskStatus = async (
+    taskId,
+    status
+) => {
+    const task = await Task.findById(taskId);
+    if (!task) {
+    throw new Error("Task not found");
+}
+const validStatuses = [
+    "TODO",
+    "IN_PROGRESS",
+    "DONE"
+];
+if (!validStatuses.includes(status)) {
+    throw new Error("Invalid status");
+}
+task.status=status
+await task.save();
+return task;
+};
