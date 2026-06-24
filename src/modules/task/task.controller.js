@@ -1,4 +1,4 @@
-import { createTask, getProjectTasks, updateTaskStatus } from "./task.service.js";
+import { createTask, getProjectTasks, updateTaskStatus ,getTaskById,deleteTask} from "./task.service.js";
 export const createTaskController = async (req, res) => {
      try {
         const taskData=req.body
@@ -22,7 +22,7 @@ export const getProjectTasksController = async (
    try {
      const projectId = req.params.projectId;
       const result=await getProjectTasks(projectId);
-      res.status(201).json({
+      res.status(200).json({
             result
         })
    } catch (error) {
@@ -40,7 +40,7 @@ export const updateTaskStatusController = async (
       const taskId=req.params.taskId;
       const { status } = req.body;
       const result=await updateTaskStatus(taskId,status)
-       res.status(201).json({
+       res.status(200).json({
             result
         })
     } catch (error) {
@@ -48,4 +48,34 @@ export const updateTaskStatusController = async (
         message:error.message
      })
     }
+};
+export const taskbyIdcontroller=async(req,res)=>{
+   try {
+     const taskId=req.params.taskId;
+     const result=await getTaskById(taskId);
+     res.status(200).json({
+        result
+     })
+   } catch (error) {
+     res.status(400).json({
+        message:error.message
+     })
+   }
+}
+export const deleteTaskController = async (
+    req,
+    res
+) => {
+    try {
+     const taskId=req.params.taskId;
+     const result=await deleteTask(taskId);
+     res.status(200).json({
+        message:"Task deleted successfully",
+        task:result
+     })
+   } catch (error) {
+     res.status(400).json({
+        message:error.message
+     })
+   }
 };

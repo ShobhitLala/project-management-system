@@ -37,6 +37,7 @@ const task = await Task.create({
 return task
 
 };
+
 export const getProjectTasks=async(projectId)=>{
 const existingProject = await Project.findById(projectId);
 if (!existingProject) {
@@ -44,7 +45,8 @@ if (!existingProject) {
 }
 const tasks=await Task.find({project:projectId});
 return tasks;
-}
+};
+
 export const updateTaskStatus = async (
     taskId,
     status
@@ -64,4 +66,27 @@ if (!validStatuses.includes(status)) {
 task.status=status
 await task.save();
 return task;
+};
+
+export const getTaskById = async (
+    taskId
+) => {
+    const existTask=await Task.findById(taskId);
+    if(!existTask){
+        throw new Error("Task iss invalid");
+    }
+    return existTask;
+};
+export const deleteTask = async (
+    taskId
+) => {
+   const task = await Task.findById(taskId);
+
+if (!task) {
+    throw new Error("Task not found");
+}
+await Task.findByIdAndDelete(taskId);
+return {
+    task
+};
 };
