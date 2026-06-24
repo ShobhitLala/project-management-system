@@ -1,4 +1,4 @@
-import { createTask, getProjectTasks, updateTaskStatus ,getTaskById,deleteTask} from "./task.service.js";
+import { createTask, getProjectTasks, updateTaskStatus ,getTaskById,deleteTask,assignTask} from "./task.service.js";
 export const createTaskController = async (req, res) => {
      try {
         const taskData=req.body
@@ -79,3 +79,18 @@ export const deleteTaskController = async (
      })
    }
 };
+export const assignTaskController=async(req,res)=>{
+   try {
+      const taskId=req.params.taskId;
+      const assignedTo=req.body.assignedTo;
+      const result=await assignTask(taskId,assignedTo);
+       res.status(200).json({
+           message: "Task assigned successfully",
+        task:result
+     })
+   } catch (error) {
+      res.status(400).json({
+        message:error.message
+     })
+   }
+}

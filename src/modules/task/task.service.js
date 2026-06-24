@@ -77,6 +77,7 @@ export const getTaskById = async (
     }
     return existTask;
 };
+
 export const deleteTask = async (
     taskId
 ) => {
@@ -89,4 +90,21 @@ await Task.findByIdAndDelete(taskId);
 return {
     task
 };
+};
+export const assignTask = async (
+    taskId,
+    assignedTo
+) => {
+    const task = await Task.findById(taskId);
+    if (!task) {
+    throw new Error("Task not found");
+}
+const user = await User.findById(assignedTo);
+
+if (!user) {
+    throw new Error("User not found");
+}
+task.assignedTo = assignedTo;
+await task.save();
+return task;
 };
