@@ -22,10 +22,10 @@ if (!projectexist) {
 }
 if (assignedTo) {
     const user = await User.findById(assignedTo);
-
     if (!user) {
         throw new Error("Assigned user not found");
     }
+    
 }
 
 const task = await Task.create({
@@ -46,7 +46,7 @@ const existingProject = await Project.findById(projectId);
 if (!existingProject) {
     throw new Error("Project not found");
 }
-const tasks=await Task.find({project:projectId});
+const tasks=await Task.find({project:projectId}).populate("assignedTo","name email").populate("project", "name");;
 return tasks;
 };
 
@@ -74,11 +74,12 @@ return task;
 export const getTaskById = async (
     taskId
 ) => {
-    const existTask=await Task.findById(taskId);
-    if(!existTask){
+    const task = await Task.findById(taskId)
+    .populate("assignedTo","name email").populate("project", "name");
+    if(!task){
         throw new Error("Task iss invalid");
     }
-    return existTask;
+    return task;
 };
 
 export const deleteTask = async (
