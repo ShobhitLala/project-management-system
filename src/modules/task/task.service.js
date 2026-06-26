@@ -7,7 +7,8 @@ const {
     description,
     project,
     assignedTo,
-    dueDate
+    dueDate,
+    status
 } = taskData;
 if (!title || !project) {
     throw new Error("Title and project are required");
@@ -26,12 +27,14 @@ if (assignedTo) {
         throw new Error("Assigned user not found");
     }
 }
+
 const task = await Task.create({
     title,
     description,
     project,
     assignedTo,
-    dueDate
+    dueDate,
+    status
 });
 
 return task

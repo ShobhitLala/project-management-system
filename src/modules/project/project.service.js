@@ -1,5 +1,6 @@
 import { WorkSpace } from "../workspace/workspace.model.js";
 import { Project } from "./project.model.js";
+import { Task } from "../task/task.model.js";
 export const createProject = async (
     projectData,
     userId
@@ -48,3 +49,43 @@ if(workspace.owner.toString()!=userId){
   await Project.findByIdAndDelete(projectId);
   return project;
 }
+
+export const getDashboardStats = async (
+    userId
+) => {
+const totalWorkspaces = await WorkSpace.countDocuments({
+    owner: userId
+});
+const totalProjects = await Project.countDocuments({
+    createdBy: userId
+});
+const projects = await Project.find({
+    createdBy: userId
+}).select("_id");
+const projectIds = projects.map(project => project._id);
+const totalTasks = await Task.countDocuments({
+    project: {
+        $in: projectIds
+    }
+});
+const completedTasks = await Task.countDocuments({
+    project: {
+        $in: projectIds
+    },
+    status: "DONE"
+});
+const pendingTasks = await Task.countDocuments({
+    project: {
+        $in: projectIds
+    },
+    status: "TODO"
+});
+return {
+    totalWorkspaces,
+    totalProjects,
+    totalTasks,
+    completedTasks,
+    pendingTasks
+};
+
+};

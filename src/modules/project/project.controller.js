@@ -1,5 +1,4 @@
-import {createProject,deleteProject} from "./project.service.js"
-
+import {createProject,deleteProject,getDashboardStats} from "./project.service.js"
 export const createProjectController = async (req, res) => {
    try {
     const projectData=req.body;
@@ -32,3 +31,16 @@ export const deleteProjectController=async(req,res)=>{
     });
       }
 };
+export const getDashboardStatsController=async(req,res)=>{
+    try {
+        const userId=req.user._id;
+        const result=await getDashboardStats(userId);
+         res.status(200).json({
+        Dashboard:result
+    })
+    } catch (error) {
+         res.status(401).json({
+        message: error.message
+    });
+    }
+}
