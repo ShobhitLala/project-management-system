@@ -1,4 +1,5 @@
 import { WorkSpace } from "./workspace.model.js";
+import { Project } from "../project/project.model.js";
 export const workSpaceservice=async(workspaceData,userId)=>{
   const {name}=workspaceData;
   if(!name){
@@ -13,4 +14,42 @@ const workspace = await WorkSpace.create({
     members: [userId]
 });
 return workspace;
+};
+export const workspaceDetails=async(userId)=>{
+    const workspace=await WorkSpace.find({
+      members:userId
+    }).populate("owner","name email");
+    if(workspace.length === 0){
+      throw new Error("user are not member of any workspace");
+    }
+    return workspace;
+};
+export const deleteWorkspace=async(workSpaceId,userId)=>{
+    const workspace= await WorkSpace.findById(workSpaceId);
+     if(!workspace){
+      throw new Error(" workspace not exists");
+    }
+    if(userId.toString()!==workspace.owner.toString()){
+      throw new Error("unauthorised action");
+    }
+    await WorkSpace.findByIdAndDelete(workSpaceId);
+    return workspace;
+
+}
+
+export const getprojectinWorkspace=async(workSpaceId,userId)=>{
+    const workspace=await WorkSpace.findById(workSpaceId);
+    if(!workspace){
+      throw new Error("WorkSpace with given Id do not exists");
+    }
+    const members= workspace.members;
+    const validmembers=members.map(member=>member.toString())
+    const isValidmember=validmembers.includes(userId.toString())
+    if(!isValidmember){
+      throw new Error("Unauthorised");
+    }
+    const projects=await Project.find({
+      workspace:workSpaceId
+    })
+    return projects;
 };

@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { authenticate } from "../../middleware/auth.middleware.js";
+import{ getprojectinWorkspacecontroller} from "../workspace/workspace.controller.js"
 import { createProjectController,deleteProjectController,getDashboardStatsController} from "./project.controller.js";
 const router = Router();
 router.post("/",authenticate,createProjectController);
@@ -13,5 +14,8 @@ router.delete(
     authenticate,
     deleteProjectController
 );
-
-export default router;
+router.get(
+    "/workspace/:workspaceId",
+    authenticate,
+    getprojectinWorkspacecontroller
+);  
