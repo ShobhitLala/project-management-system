@@ -9,13 +9,15 @@ router.get(
     authenticate,
     getDashboardStatsController
 );
-router.delete(
-    "/:projectId",
-    authenticate,
-    deleteProjectController
-);
 router.get(
     "/workspace/:workspaceId",
     authenticate,
     getprojectinWorkspacecontroller
 );  
+router.delete(
+    "/:projectId",
+    authenticate,
+    deleteProjectController
+);
+
+export default router;

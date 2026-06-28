@@ -3,6 +3,6 @@ import { createWorkspaceController, getworkspaceController ,deleteWorkspacecontr
 import {authenticate} from "../../middleware/auth.middleware.js";
 const router=Router();
 router.post("/",authenticate,createWorkspaceController);
-router.get("/",authenticate,getworkspaceController);
+router.get("/:workspaceid",authenticate,getworkspaceController);
 router.delete("/:workspaceId",authenticate,deleteWorkspacecontroller);
 export default router;

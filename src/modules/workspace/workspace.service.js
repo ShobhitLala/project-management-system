@@ -1,5 +1,6 @@
 import { WorkSpace } from "./workspace.model.js";
 import { Project } from "../project/project.model.js";
+import {Task} from "../task/task.model.js"
 export const workSpaceservice=async(workspaceData,userId)=>{
   const {name}=workspaceData;
   if(!name){
@@ -32,6 +33,19 @@ export const deleteWorkspace=async(workSpaceId,userId)=>{
     if(userId.toString()!==workspace.owner.toString()){
       throw new Error("unauthorised action");
     }
+   const projects = await Project.find({
+    workspace: workSpaceId
+   }).select("_id");
+   const projectIds=projects.map(project=>project._id);
+   await Task.deleteMany({
+      project: {
+        $in: projectIds
+    }
+   })
+   await Project.deleteMany({
+    workspace:workSpaceId
+   })
+
     await WorkSpace.findByIdAndDelete(workSpaceId);
     return workspace;
 
