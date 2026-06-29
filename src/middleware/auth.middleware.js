@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import { User } from "../modules/user/user.model.js";
 export const authenticate= async(req,res,next)=>{
     const authHeader = req.headers.authorization;
+    console.log("Authorization Header:", authHeader);
     if (!authHeader) {
     return res.status(401).json({
         message: "Unauthorized"

@@ -4,7 +4,7 @@ import mongoose from "mongoose";
         await mongoose.connect(process.env.MONGODB_URI);
         console.log("DATABASE connected")
     } catch (error) {
-        console.error("database connection failed");
+        console.error("database connection failed",error);
         process.exit(1);
     }};
  
