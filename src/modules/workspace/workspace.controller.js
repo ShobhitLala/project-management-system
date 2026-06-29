@@ -46,7 +46,7 @@ export const deleteWorkspacecontroller=async(req,res)=>{
         const userId=req.user._id;
         const result=await deleteWorkspace(workspaceId,userId);
          res.status(200).json({
-          message:"workspace got deleted",
+         message:"workspace got deleted",
          result
         });
     } catch (error) {
